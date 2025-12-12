@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나만의 동화 만들기 - 녹화</title>
+    <link rel="stylesheet" href="style3.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="tutorial-modal-overlay">
+        <div class="tutorial-modal">
+            <button class="modal-close-button" onclick="closeTutorial()">×</button>
+            
+            <div class="tutorial-page active" id="page-slide-2">
+                <div class="slide-show-container">
+                    <div class="slide-track" id="slide-track-2">
+                        </div>
+                </div>
+                <div class="slide-text" id="slide-text-2">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <header class="app-header">
+        <button id="homeButton" class="control-button home-button" title="홈으로 이동">
+            <img src="img/홈.png" alt="홈">
+        </button>
+        <button id="tutorialButton" class="control-button tutorial-button" title="튜토리얼 다시보기">
+            ?
+        </button>
+        <button id="downloadButton" disabled class="export-button">영상 다운로드</button>
+    </header>
+
+    <div class="app-main">
+        <aside class="asset-panel">
+            <div class="asset-container">
+                <div id="decorations" class="asset-list">
+                    <img src="img/나비.png" class="asset-item" data-type="decoration" data-canvas-src="img/나비2.png" alt="나비">
+                    <img src="img/펭귄.png" class="asset-item" data-type="decoration" data-canvas-src="img/펭귄2.png" alt="펭귄">
+                    <img src="img/펭귄3.png" class="asset-item" data-type="decoration" data-canvas-src="img/펭귄3_1.png" alt="펭귄2">
+                    <img src="img/줄리엣1.png" class="asset-item" data-type="decoration" data-canvas-src="img/줄리엣1-2.png" alt="줄리엣1">
+                    <img src="img/줄리엣2.png" class="asset-item" data-type="decoration" data-canvas-src="img/줄리엣2-2.png" alt="줄리엣2">
+                    <img src="img/줄리엣3.png" class="asset-item" data-type="decoration" data-canvas-src="img/줄리엣3-2.png" alt="줄리엣3">
+                    <img src="img/줄리엣4.png" class="asset-item" data-type="decoration" data-canvas-src="img/줄리엣4_1.png" alt="줄리엣4">
+                    <img src="img/줄리엣5.png" class="asset-item" data-type="decoration" data-canvas-src="img/줄리엣5-1.png" alt="줄리엣5">
+                    <img src="img/로미오1.png" class="asset-item" data-type="decoration" data-canvas-src="img/로미오1-2.png" alt="로미오1">
+                    <img src="img/로미오2.png" class="asset-item" data-type="decoration" data-canvas-src="img/로미오2-2.png" alt="로미오2">
+                    <img src="img/로미오3.png" class="asset-item" data-type="decoration" alt="로미오3">
+                    <img src="img/사촌.png" class="asset-item" data-type="decoration" alt="사촌">
+                    <img src="img/가족.png" class="asset-item" data-type="decoration" data-canvas-src="img/가족2.png" alt="가족">
+                    <img src="img/친구.png" class="asset-item" data-type="decoration" data-canvas-src="img/친구2.png" alt="친구">
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="view-wrapper" class="view-wrapper">
+                <section id="editor-view" class="story-view">
+                    <div class="canvas-wrapper">
+                        <div id="canvas">
+                            <canvas id="drawing-layer"></canvas> 
+                            <div class="snap-guide vertical-guide"></div>
+                            <div class="snap-guide horizontal-guide"></div>
+                        </div>
+                    </div>
+                    <div class="drawing-controls">
+                        <button id="play-animation" class="control-button" title="녹화 시작/정지">
+                            <span class="play-icon">▶</span>
+                        </button>
+                        <button id="delete-selected" class="control-button" title="선택 요소 또는 장면 영상 삭제">
+                            <img src="img/휴지통.png" alt="삭제">
+                        </button>
+                        <div class="color-palette">
+                            <div class="color-swatch-group">
+                                <button class="color-swatch active" style="background-color: #7B7B7B;" data-color="#7B7B7B" data-mode="draw" data-size="15" title="드로잉 색상: 다크 그레이"></button>
+                                <button class="color-swatch" style="background-color: #7E84E4;" data-color="#7E84E4" data-mode="draw" data-size="15" title="드로잉 색상: 블루"></button>
+                                <button class="color-swatch" style="background-color: #F88586;" data-color="#F88586" data-mode="draw" data-size="15" title="드로잉 색상: 레드"></button>
+                            </div>
+                            <div id="video-timeline" class="video-timeline-container">
+                                <div class="video-progress-bar" style="width: 0;"></div> 
+                            </div>
+                            <span id="duration-display" class="timeline-timer">2:00</span>
+                        </div>
+                    </div>
+                </section>
+                <section id="final-view" class="story-view">
+                    <div class="video-result-container">
+                        <div id="loadingMessage" class="loading-message">
+                            영상 조합 중... 잠시만 기다려주세요.
+                        </div>
+                        <video id="finalVideoPlayer" controls loop autoplay class="final-video-player" style="display:none;" poster=""></video>
+                        <div id="final-canvas-wrapper" class="canvas-wrapper" style="display:none;">
+                            <canvas id="final-drawing-layer" class="final-drawing-layer"></canvas> 
+                            <div id="final-decoration-container" class="final-decoration-container"></div>
+                        </div>
+                    </div>
+                </section>
+            </div> 
+            
+            <div class="timeline">
+                <div class="timeline-strip">
+                    <div class="scene active" data-scene="1"></div><span class="arrow">→</span>
+                    <div class="scene" data-scene="2"></div><span class="arrow">→</span>
+                    <div class="scene" data-scene="3"></div><span class="arrow">→</span>
+                    <div class="scene" data-scene="4"></div><span class="arrow">→</span>
+                    <div class="scene" data-scene="5"></div><span class="arrow">→</span>
+                    <div class="scene" data-scene="6"></div><span class="arrow">→</span>
+                    <div class="scene" data-scene="7"></div><span class="arrow">→</span>
+                    <div class="scene" data-scene="8"></div>
+                </div>
+            </div>
+
+            <div id="qrModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" id="closeModal">&times;</span>
+                    <h3>모바일에서 다운로드</h3>
+                    <p>휴대폰 카메라로 아래 QR 코드를 스캔하세요.</p>
+                    <div id="qrcode"></div>
+                    <a id="directDownload" href="#" download="my_story_video.webm" class="direct-download-link" style="display: none; margin-top: 15px;">PC 다운로드 (WebM)</a>
+                </div>
+            </div>
+
+            <button id="nav-prev" class="nav-arrow prev-arrow" title="이전 뷰로 이동"><img src="img/arrow-left.png" alt="이전"></button>
+            <button id="nav-next" class="nav-arrow next-arrow" title="최종 영상 뷰로 이동"><img src="img/arrow-right.png" alt="다음"></button>
+        </main>
+    </div>
+    <script src="script3.js"></script>
+</body>
+</html>
